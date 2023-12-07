@@ -6,7 +6,7 @@ from core.game import Game
 def main():
     pygame.init()
 
-    game = Game()
+    game = Game("core/assets/sigrun/s1.png")
     game.run()
 
     pygame.quit()
