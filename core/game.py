@@ -9,11 +9,8 @@ class Game:
         pygame.display.set_caption("BlastBot Adventures")
 
         # Cargar la imagen del jugador
-        self.p_image = pygame.image.load(player_image)
-        #player_rect = self.p_image.get_rect()
-        #player_rect.topleft = (self.width // 2 - player_rect.width // 2, self.height - player_rect.height - 10)
-
-        self.player = Player(self.width, self.height, self.p_image)  
+        self.player = Player(self.width, self.height, player_image)
+        
         self.score = 0
         self.font = pygame.font.Font(None, 36)
 
@@ -28,6 +25,7 @@ class Game:
             keys = pygame.key.get_pressed()
             self.player.handle_input(keys)
 
+            self.player.movements()
             self.player.update()
 
             self.draw()

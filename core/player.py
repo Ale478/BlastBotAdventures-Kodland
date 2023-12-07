@@ -1,9 +1,12 @@
 import pygame
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, screen_width, screen_height, image):
+    def __init__(self, screen_width, screen_height, images):
         super().__init__()
-        self.image = image
+        self.images = [pygame.image.load(image) for image in images]
+        self.image_index = 0
+        self.update_time = pygame.time.get_ticks()
+        self.image = self.images[self.image_index]
         self.rect = self.image.get_rect()
         self.rect.topleft = (screen_width // 2 - self.rect.width // 2, screen_height - self.rect.height - 10)
         self.speed = 1
@@ -28,7 +31,7 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_DOWN]:
             self.vel_y = self.speed
 
-    def update(self):
+    def movements(self):
 
         if self.vel_x < 0:
             self.flip = True
@@ -42,6 +45,17 @@ class Player(pygame.sprite.Sprite):
         # Restringir el rectángulo dentro de los límites de la pantalla
         self.rect.x = max(0, min(self.rect.x, self.screen_width - self.rect.width))
         self.rect.y = max(0, min(self.rect.y, self.screen_height - self.rect.height))
+
+    def update(self):
+        cooldown_animation = 100
+        self.image = self.images[self.image_index]
+
+        if pygame.time.get_ticks() - self.update_time >= cooldown_animation:
+            self.image_index += 1
+            self.update_time = pygame.time.get_ticks()
+        if self.image_index >= len(self.images):
+            self.image_index = 0
+
 
     def draw(self, screen):
         image_flip = pygame.transform.flip(self.image, self.flip, flip_y =False)
