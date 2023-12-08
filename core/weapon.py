@@ -14,13 +14,13 @@ class Weapon:
     def update(self, player_rect):
         self.rect.center = player_rect.center
         self.rect.x = (player_rect.x + player_rect.width / 2)
-        
 
         bala = None
         if pygame.mouse.get_pressed()[0]:
             bala = Bullet(self.bullet_image, self.rect.centerx, self.rect.centery, player_rect)
-            
+        
         return bala
+
 
     def draw(self, screen, bullets):
         screen.blit(self.image, self.rect.topleft)

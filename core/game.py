@@ -32,6 +32,10 @@ class Game:
             position = enemy_positions[i % len(enemy_positions)]
             enemy = Enemy(position[0], position[1], enemy_images[i % len(enemy_images)])
             self.enemies.add(enemy)
+        
+        self.num_enemies = num_enemies
+        self.enemy_count = num_enemies
+
     
         
     
@@ -46,14 +50,15 @@ class Game:
 
         player_hit = pygame.sprite.spritecollide(self.player, self.enemies, False)
         if player_hit:
-            self.game_over()
-
+            self.enemy_count -= 1
+            if self.enemy_count == 0:
+                self.game_over()
 
 
     def run(self):
         running = True
 
-        while running:
+        while running and self.enemy_count > 0:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
@@ -82,6 +87,8 @@ class Game:
         self.enemies.draw(self.screen)  # Agrega esta línea para dibujar a los enemigos
         score_text = self.font.render(f"Score: {self.score}", True, (255, 255, 255))
         self.screen.blit(score_text, (10, 10))
+        enemy_count_text = self.font.render(f"Enemies: {self.enemy_count}", True, (255, 255, 255))
+        self.screen.blit(enemy_count_text, (10, 40))
 
         
     def game_over(self):

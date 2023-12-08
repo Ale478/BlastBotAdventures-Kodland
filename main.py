@@ -37,6 +37,9 @@ def show_menu():
                     selected_option = options[selected_index]
                 elif event.key == pygame.K_RETURN:
                     return int(selected_option)
+            elif event.type == pygame.MOUSEBUTTONDOWN:  
+                if event.button == 1:  
+                    return int(selected_option)
 
         screen.fill((0, 0, 30))
         screen.blit(text, text_rect)
@@ -49,56 +52,54 @@ def show_menu():
         pygame.display.flip()
 
 def main():
-    num_enemies = show_menu()
+    try: 
+        num_enemies = show_menu()
 
-    pygame.init()
+        pygame.init()
 
-    image_files = [
-        "core/assets/sigrun/s1.png",
-        "core/assets/sigrun/s2.png",
-        "core/assets/sigrun/s3.png",
-        "core/assets/sigrun/s4.png",
-        "core/assets/sigrun/s5.png",
-        "core/assets/sigrun/s6.png",
-        "core/assets/sigrun/s7.png",
-    ]
+        image_files = [
+            "core/assets/sigrun/s1.png",
+            "core/assets/sigrun/s2.png",
+            "core/assets/sigrun/s3.png",
+            "core/assets/sigrun/s4.png",
+            "core/assets/sigrun/s5.png",
+            "core/assets/sigrun/s6.png",
+            "core/assets/sigrun/s7.png",
+        ]
 
-    goblin_images = [
-        "core/assets/enemies/goblin/goblin_1.png",
-        "core/assets/enemies/goblin/goblin_2.png",
-        "core/assets/enemies/goblin/goblin_3.png",
-        "core/assets/enemies/goblin/goblin_4.png",
-        "core/assets/enemies/goblin/goblin_5.png",
-        "core/assets/enemies/goblin/goblin_6.png",
-        "core/assets/enemies/goblin/goblin_7.png",
-        "core/assets/enemies/goblin/goblin_8.png",
-    ]
+        goblin_images = [
+            "core/assets/enemies/goblin/goblin_1.png",
+            "core/assets/enemies/goblin/goblin_2.png",
+            "core/assets/enemies/goblin/goblin_3.png",
+            "core/assets/enemies/goblin/goblin_4.png",
+            "core/assets/enemies/goblin/goblin_5.png",
+            "core/assets/enemies/goblin/goblin_6.png",
+            "core/assets/enemies/goblin/goblin_7.png",
+            "core/assets/enemies/goblin/goblin_8.png",
+        ]
 
-    
-    hongo_images = [
-        "core/assets/enemies/honguito/honguito_1.png",
-        "core/assets/enemies/honguito/honguito_2.png",
-        "core/assets/enemies/honguito/honguito_3.png",
-        "core/assets/enemies/honguito/honguito_4.png",
-    ]
+        
+        hongo_images = [
+            "core/assets/enemies/honguito/honguito_1.png",
+            "core/assets/enemies/honguito/honguito_2.png",
+            "core/assets/enemies/honguito/honguito_3.png",
+            "core/assets/enemies/honguito/honguito_4.png",
+        ]
 
-    
-    enemy_images = [goblin_images, hongo_images]
+        
+        enemy_images = [goblin_images, hongo_images]
 
-    image_gun = pygame.image.load("core/assets/weapons/weapon.png")
-    image_bullet = pygame.image.load("core/assets/weapons/bullet.png")
+        image_gun = pygame.image.load("core/assets/weapons/weapon.png")
+        image_bullet = pygame.image.load("core/assets/weapons/bullet.png")
 
-    game = Game(image_files, image_gun, image_bullet, enemy_images, num_enemies)
-    game.run()
+        game = Game(image_files, image_gun, image_bullet, enemy_images, num_enemies)
+        game.run()
 
-    pygame.quit()
-    sys.exit()
-
-if __name__ == "__main__":
-    try:
-        main()
     except Exception as e:
-        print(f"An error occurred: {e}")
+        print("Error:", e)
+    finally:
         pygame.quit()
         sys.exit()
 
+if __name__ == "__main__":
+    main()
