@@ -52,6 +52,7 @@ def show_menu():
         pygame.display.flip()
 
 def main():
+    global game
     try: 
         num_enemies = show_menu()
 
@@ -95,11 +96,43 @@ def main():
         game = Game(image_files, image_gun, image_bullet, enemy_images, num_enemies)
         game.run()
 
+        show_game_over_auto()
+
     except Exception as e:
         print("Error:", e)
     finally:
         pygame.quit()
         sys.exit()
+    
+def show_game_over_auto():
+    pygame.init()
+
+    screen = pygame.display.set_mode((800, 600))
+    pygame.display.set_caption("Sigrun Adventures Game Over")
+
+    font = pygame.font.Font(None, 36)
+    text = font.render("Game Over - All enemies defeated!", True, (255, 255, 255))
+    text_rect = text.get_rect(center=(400, 200))
+
+    end_time = pygame.time.get_ticks() + 3000  # 3000 milisegundos (3 segundos)
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        current_time = pygame.time.get_ticks()
+        if current_time >= end_time:
+            break
+
+        screen.fill((0, 0, 30))
+        screen.blit(text, text_rect)
+
+        pygame.display.flip()
+
+    pygame.quit()
+    sys.exit()
 
 if __name__ == "__main__":
     main()

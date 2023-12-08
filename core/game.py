@@ -9,8 +9,9 @@ class Game:
         self.width, self.height = 800, 600
         self.screen = pygame.display.set_mode((self.width, self.height))
         pygame.display.set_caption("Sigrun Adventures")
+        
+        self.game_over = False
 
-        # Cargar las imágenes del jugador
         self.player = Player(self.width, self.height, player_images, weapon_image, bullet_image)  # Añade bullet_image como un parámetro
         self.weapon = Weapon(weapon_image, bullet_image)
         
@@ -36,7 +37,6 @@ class Game:
         self.num_enemies = num_enemies
         self.enemy_count = num_enemies
 
-    
         
     
     def check_collisions(self):
@@ -81,17 +81,22 @@ class Game:
 
             pygame.display.flip()
 
+            if self.game_over:
+                break
+
+    def game_over_method(self):
+        self.game_over = True
+
+
     def draw(self):
         self.screen.fill((0, 0, 30))
         self.player.draw(self.screen, self.bullets)
-        self.enemies.draw(self.screen)  # Agrega esta línea para dibujar a los enemigos
+        self.enemies.draw(self.screen)
         score_text = self.font.render(f"Score: {self.score}", True, (255, 255, 255))
         self.screen.blit(score_text, (10, 10))
         enemy_count_text = self.font.render(f"Enemies: {self.enemy_count}", True, (255, 255, 255))
         self.screen.blit(enemy_count_text, (10, 40))
 
         
-    def game_over(self):
-        self.running = False 
-        #pygame.quit()
-        #sys.exit()
+  
+       
