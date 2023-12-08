@@ -5,7 +5,7 @@ from core.weapon import Weapon
 from core.enemy import Enemy
 
 class Game:
-    def __init__(self, player_images, weapon_image, bullet_image, enemy_images):
+    def __init__(self, player_images, weapon_image, bullet_image, enemy_images, num_enemies):
         self.width, self.height = 800, 600
         self.screen = pygame.display.set_mode((self.width, self.height))
         pygame.display.set_caption("Sigrun Adventures")
@@ -28,18 +28,22 @@ class Game:
             (350, 200)
         ]
 
-        for i, position in enumerate(enemy_positions):
+        for i in range(num_enemies):
+            position = enemy_positions[i % len(enemy_positions)]
             enemy = Enemy(position[0], position[1], enemy_images[i % len(enemy_images)])
             self.enemies.add(enemy)
+    
         
     
     def check_collisions(self):
-        # Colisiones entre balas y enemigos
         hits = pygame.sprite.groupcollide(self.enemies, self.bullets, True, True)
         for enemy, bullets in hits.items():
             self.score += len(bullets)
 
-        # Colisiones entre jugador y enemigos
+        self.bullets = pygame.sprite.Group([bullet for bullet in self.bullets if 0 < bullet.rect.x < self.width])
+
+        self.enemies = pygame.sprite.Group([enemy for enemy in self.enemies if 0 < enemy.rect.x < self.width])
+
         player_hit = pygame.sprite.spritecollide(self.player, self.enemies, False)
         if player_hit:
             self.game_over()
@@ -81,6 +85,6 @@ class Game:
 
         
     def game_over(self):
-        print(f"Game Over. Score: {self.score}")
-        pygame.quit()
-        sys.exit()
+        self.running = False 
+        #pygame.quit()
+        #sys.exit()
