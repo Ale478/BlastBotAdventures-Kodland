@@ -2,7 +2,7 @@ import pygame
 from core.weapon import Weapon
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, screen_width, screen_height, images, weapon_image):
+    def __init__(self, screen_width, screen_height, images, weapon_image, bullet_image):  # Añade bullet_image como un parámetro
         super().__init__()
         self.images = [pygame.image.load(image) for image in images]
         self.image_index = 0
@@ -18,8 +18,10 @@ class Player(pygame.sprite.Sprite):
 
         self.flip = False
 
-        self.weapon = Weapon(weapon_image)
+        # Pasa bullet_image como un argumento a la instancia de Weapon
+        self.weapon = Weapon(weapon_image, bullet_image)
         self.weapon_offset = (self.rect.width // 2 - self.weapon.rect.width // 2, -self.weapon.rect.height)
+
 
     def handle_input(self, keys):
         # Reiniciar la velocidad a cero en cada iteración
@@ -48,7 +50,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = max(0, min(self.rect.x, self.screen_width - self.rect.width))
         self.rect.y = max(0, min(self.rect.y, self.screen_height - self.rect.height))
 
-    def update(self):
+    def update(self, bullets):
         cooldown_animation = 100
         self.image = self.images[self.image_index]
 
@@ -57,11 +59,15 @@ class Player(pygame.sprite.Sprite):
             self.update_time = pygame.time.get_ticks()
         if self.image_index >= len(self.images):
             self.image_index = 0
+        
+        bullet = self.weapon.update(self.rect)
+        if bullet:
+            bullets.add(bullet)
 
         self.weapon.update(self.rect)
 
-    def draw(self, screen):
+    def draw(self, screen, bullets):  # Añade bullets como un parámetro
         image_flip = pygame.transform.flip(self.image, self.flip, flip_y=False)
         screen.blit(image_flip, self.rect.topleft)
-        self.weapon.draw(screen)
+        self.weapon.draw(screen, bullets)
         

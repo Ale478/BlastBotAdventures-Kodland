@@ -1,8 +1,8 @@
+# main.py
 import pygame
 import sys
 from core.game import Game
 from core.weapon import Weapon
-
 
 def main():
     pygame.init()
@@ -17,15 +17,14 @@ def main():
         "core/assets/sigrun/s7.png",
     ]
 
-    image_gun = pygame.image.load("core/assets/weapons/weapon.png") 
-    game = Game(image_files, image_gun)
+    image_gun = pygame.image.load("core/assets/weapons/weapon.png")
+    image_bullet = pygame.image.load("core/assets/weapons/bullet.png")
+
+    game = Game(image_files, image_gun, image_bullet)
     game.run()
 
-    
     pygame.quit()
     sys.exit()
-
-
 
 if __name__ == "__main__":
     main()

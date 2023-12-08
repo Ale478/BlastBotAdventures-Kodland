@@ -3,20 +3,21 @@ import sys
 from core.player import Player
 from core.weapon import Weapon
 
-
 class Game:
-    def __init__(self, player_images, weapon_image):
+    def __init__(self, player_images, weapon_image, bullet_image):
         self.width, self.height = 800, 600
         self.screen = pygame.display.set_mode((self.width, self.height))
         pygame.display.set_caption("Sigrun Adventures")
 
         # Cargar las imágenes del jugador
-        self.player = Player(self.width, self.height, player_images, weapon_image)
-        self.weapon = Weapon(weapon_image)
-        
+        self.player = Player(self.width, self.height, player_images, weapon_image, bullet_image)  # Añade bullet_image como un parámetro
+        self.weapon = Weapon(weapon_image, bullet_image)
         
         self.score = 0
         self.font = pygame.font.Font(None, 36)
+
+        self.bullets = pygame.sprite.Group()
+
 
 
 
@@ -32,8 +33,10 @@ class Game:
             self.player.handle_input(keys)
 
             self.player.movements()
-            self.player.weapon.update(self.player.rect)
-            self.player.update()
+            self.player.update(self.bullets)
+
+            self.bullets.update()
+            self.bullets.draw(self.screen)
 
             self.draw()
 
@@ -41,11 +44,11 @@ class Game:
 
     def draw(self):
         self.screen.fill((0, 0, 30))
-        self.player.draw(self.screen)
+        self.player.draw(self.screen, self.bullets)  
 
         score_text = self.font.render(f"Score: {self.score}", True, (255, 255, 255))
         self.screen.blit(score_text, (10, 10))
-
+        
     def game_over(self):
         print(f"Game Over. Score: {self.score}")
         pygame.quit()
