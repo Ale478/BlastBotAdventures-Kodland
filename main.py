@@ -27,26 +27,34 @@ def show_menu():
         option_rects.append((option, option_rect))
 
     selected_option = options[0]
+    key_up_pressed = False
+    key_down_pressed = False
 
     while True:
+        keys = pygame.key.get_pressed()
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP:
+                if event.key == pygame.K_UP and not key_up_pressed:
                     selected_index = options.index(selected_option)
                     selected_index = (selected_index - 1) % len(options)
                     selected_option = options[selected_index]
-                elif event.key == pygame.K_DOWN:
+                    key_up_pressed = True
+                elif event.key == pygame.K_DOWN and not key_down_pressed:
                     selected_index = options.index(selected_option)
                     selected_index = (selected_index + 1) % len(options)
                     selected_option = options[selected_index]
+                    key_down_pressed = True
                 elif event.key == pygame.K_RETURN:
                     return int(selected_option)
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    return int(selected_option)
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_UP:
+                    key_up_pressed = False
+                elif event.key == pygame.K_DOWN:
+                    key_down_pressed = False
 
         screen.fill((0, 0, 30))
         screen.blit(text, text_rect)
@@ -124,7 +132,7 @@ def show_game_over_auto():
     pygame.display.set_caption("Sigrun Adventures Game Over")
 
     font = pygame.font.Font(None, 36)
-    text = font.render("Game Over - All enemies defeated!", True, (255, 255, 255))
+    text = font.render("Game Over!", True, (255, 255, 255))
     text_rect = text.get_rect(center=(400, 200))
 
     end_time = pygame.time.get_ticks() + 3000

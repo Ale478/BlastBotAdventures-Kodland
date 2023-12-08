@@ -2,6 +2,7 @@ import pygame
 from core.player import Player
 from core.weapon import Weapon
 from core.enemy import Enemy
+import sys
 
 
 class Game:
@@ -46,6 +47,31 @@ class Game:
         self.num_enemies = num_enemies
         self.enemy_count = num_enemies
 
+        self.victory_message = "Congratulations! You defeated all enemies!"
+        self.defeat_message = "Game Over - You Lost!"
+
+    def game_over_method(self, victory=False):
+        """
+        Marca el juego como terminado.
+
+        Args:
+            victory (bool): Indica si el juego terminó por victoria o derrota.
+        """
+        self.game_over = True
+        print("Game Over - You Lost!")
+
+        self.draw_game_over("You Lost!")
+
+    def check_victory(self):
+        """
+        Verifica si el jugador ha ganado (eliminó a todos los enemigos).
+        """
+        if self.enemy_count == 0:
+            self.game_over = True
+            print("Congratulations! You Won!")
+
+            self.draw_game_over("You Won!")
+
     def check_collisions(self):
         """
         Verifica y maneja las colisiones entre balas, enemigos y el jugador.
@@ -53,6 +79,7 @@ class Game:
         hits = pygame.sprite.groupcollide(self.enemies, self.bullets, True, True)
         for enemy, bullets in hits.items():
             self.score += len(bullets)
+            self.enemy_count -= 1
 
         self.bullets = pygame.sprite.Group(
             [bullet for bullet in self.bullets if 0 < bullet.rect.x < self.width]
@@ -65,8 +92,10 @@ class Game:
         player_hit = pygame.sprite.spritecollide(self.player, self.enemies, False)
         if player_hit:
             self.enemy_count -= 1
-            if self.enemy_count == 0:
-                self.game_over()
+            if self.enemy_count > 0:
+                self.game_over_method()
+            else:
+                self.check_victory()
 
     def run(self):
         """
@@ -105,6 +134,18 @@ class Game:
         Marca el juego como terminado.
         """
         self.game_over = True
+        print("Game Over - You Lost!")
+
+    def draw_game_over(self, message):
+        """
+        Dibuja el mensaje de Game Over en la pantalla.
+
+        Args:
+            message (str): El mensaje a mostrar.
+        """
+        game_over_text = self.font.render(message, True, (255, 255, 255))
+        text_rect = game_over_text.get_rect(center=(self.width // 2, self.height // 2))
+        self.screen.blit(game_over_text, text_rect)
 
     def draw(self):
         """
@@ -119,3 +160,6 @@ class Game:
             f"Enemies: {self.enemy_count}", True, (255, 255, 255)
         )
         self.screen.blit(enemy_count_text, (10, 40))
+
+        if self.game_over:
+            self.draw_game_over("You Lost!" if self.enemy_count > 0 else "You Won!")
