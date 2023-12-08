@@ -36,8 +36,7 @@ class Player(pygame.sprite.Sprite):
             self.vel_y = self.speed
 
     def movements(self):
-        if self.vel_x < 0:
-            self.flip = True
+        
         if self.vel_x > 0:
             self.flip = False
 
@@ -60,7 +59,6 @@ class Player(pygame.sprite.Sprite):
             self.image_index = 0
 
         self.weapon.update(self.rect)
-        self.weapon.rotate_weapon(self.flip)
 
     def draw(self, screen):
         image_flip = pygame.transform.flip(self.image, self.flip, flip_y=False)

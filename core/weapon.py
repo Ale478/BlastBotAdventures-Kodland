@@ -16,12 +16,6 @@ class Weapon:
         self.rect.x = (player_rect.x + player_rect.width / 2) + 10
         
 
-    def rotate_weapon(self, flip):
-        # Rotar la imagen original, no la imagen ya rotada
-        if flip:
-            self.image = pygame.transform.flip(self.original_image, True, False)
-        else:
-            self.image = self.original_image
 
     def draw(self, screen):
         screen.blit(self.image, self.rect.topleft)
