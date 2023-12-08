@@ -20,9 +20,29 @@ class Game:
         self.bullets = pygame.sprite.Group()
 
         self.enemies = pygame.sprite.Group()
-        for i, enemy_type_images in enumerate(enemy_images):
-            enemy = Enemy(100 * i, 100, enemy_type_images)
+
+        enemy_positions = [
+            (400, 150),
+            (550, 300),
+            (600, 450),
+            (350, 200)
+        ]
+
+        for i, position in enumerate(enemy_positions):
+            enemy = Enemy(position[0], position[1], enemy_images[i % len(enemy_images)])
             self.enemies.add(enemy)
+        
+    
+    def check_collisions(self):
+        # Colisiones entre balas y enemigos
+        hits = pygame.sprite.groupcollide(self.enemies, self.bullets, True, True)
+        for enemy, bullets in hits.items():
+            self.score += len(bullets)
+
+        # Colisiones entre jugador y enemigos
+        player_hit = pygame.sprite.spritecollide(self.player, self.enemies, False)
+        if player_hit:
+            self.game_over()
 
 
 
@@ -45,6 +65,8 @@ class Game:
 
             self.enemies.update()
             self.enemies.draw(self.screen)
+
+            self.check_collisions()
 
             self.draw()
 
