@@ -1,6 +1,6 @@
 # ¡Sigrún Adventures!
 
-![Sigrun Adventures Logo](core/assets/readme/logo.png)
+![Sigrun Adventures Logo](core/assets/readme/logo1.png)
 
 ## Descripción
 Sigrún Adventures es un juego simple desarrollado en Python utilizando la biblioteca Pygame. En el juego, los jugadores controlan a Sigrún, el personaje principal, y se enfrentan a enemigos mientras intentan alcanzar la puntuación más alta.
