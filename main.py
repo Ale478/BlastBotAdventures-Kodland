@@ -2,7 +2,14 @@ import pygame
 import sys
 from core.game import Game
 
+
 def show_menu():
+    """
+    Muestra el menú de selección de enemigos y permite al jugador elegir el número de enemigos.
+
+    Returns:
+        int: Número de enemigos seleccionado por el jugador.
+    """
     pygame.init()
 
     screen = pygame.display.set_mode((800, 600))
@@ -37,8 +44,8 @@ def show_menu():
                     selected_option = options[selected_index]
                 elif event.key == pygame.K_RETURN:
                     return int(selected_option)
-            elif event.type == pygame.MOUSEBUTTONDOWN:  
-                if event.button == 1:  
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
                     return int(selected_option)
 
         screen.fill((0, 0, 30))
@@ -51,9 +58,13 @@ def show_menu():
 
         pygame.display.flip()
 
+
 def main():
+    """
+    Función principal del juego.
+    """
     global game
-    try: 
+    try:
         num_enemies = show_menu()
 
         pygame.init()
@@ -79,7 +90,6 @@ def main():
             "core/assets/enemies/goblin/goblin_8.png",
         ]
 
-        
         hongo_images = [
             "core/assets/enemies/honguito/honguito_1.png",
             "core/assets/enemies/honguito/honguito_2.png",
@@ -87,7 +97,6 @@ def main():
             "core/assets/enemies/honguito/honguito_4.png",
         ]
 
-        
         enemy_images = [goblin_images, hongo_images]
 
         image_gun = pygame.image.load("core/assets/weapons/weapon.png")
@@ -103,8 +112,12 @@ def main():
     finally:
         pygame.quit()
         sys.exit()
-    
+
+
 def show_game_over_auto():
+    """
+    Muestra automáticamente la pantalla de Game Over después de que se acaban los enemigos.
+    """
     pygame.init()
 
     screen = pygame.display.set_mode((800, 600))
@@ -114,7 +127,7 @@ def show_game_over_auto():
     text = font.render("Game Over - All enemies defeated!", True, (255, 255, 255))
     text_rect = text.get_rect(center=(400, 200))
 
-    end_time = pygame.time.get_ticks() + 3000  # 3000 milisegundos (3 segundos)
+    end_time = pygame.time.get_ticks() + 3000
 
     while True:
         for event in pygame.event.get():
@@ -133,6 +146,7 @@ def show_game_over_auto():
 
     pygame.quit()
     sys.exit()
+
 
 if __name__ == "__main__":
     main()
