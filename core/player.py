@@ -59,6 +59,9 @@ class Player(pygame.sprite.Sprite):
         if self.image_index >= len(self.images):
             self.image_index = 0
 
+        self.weapon.update(self.rect)
+        self.weapon.rotate_weapon(self.flip)
+
     def draw(self, screen):
         image_flip = pygame.transform.flip(self.image, self.flip, flip_y=False)
         screen.blit(image_flip, self.rect.topleft)
