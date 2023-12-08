@@ -1,7 +1,8 @@
 import pygame
+from core.weapon import Weapon
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, screen_width, screen_height, images):
+    def __init__(self, screen_width, screen_height, images, weapon_image):
         super().__init__()
         self.images = [pygame.image.load(image) for image in images]
         self.image_index = 0
@@ -16,6 +17,9 @@ class Player(pygame.sprite.Sprite):
         self.vel_y = 0
 
         self.flip = False
+
+        self.weapon = Weapon(weapon_image)
+        self.weapon_offset = (self.rect.width // 2 - self.weapon.rect.width // 2, -self.weapon.rect.height)
 
     def handle_input(self, keys):
         # Reiniciar la velocidad a cero en cada iteración
@@ -32,7 +36,6 @@ class Player(pygame.sprite.Sprite):
             self.vel_y = self.speed
 
     def movements(self):
-
         if self.vel_x < 0:
             self.flip = True
         if self.vel_x > 0:
@@ -56,7 +59,8 @@ class Player(pygame.sprite.Sprite):
         if self.image_index >= len(self.images):
             self.image_index = 0
 
-
     def draw(self, screen):
-        image_flip = pygame.transform.flip(self.image, self.flip, flip_y =False)
+        image_flip = pygame.transform.flip(self.image, self.flip, flip_y=False)
         screen.blit(image_flip, self.rect.topleft)
+        self.weapon.draw(screen)
+        

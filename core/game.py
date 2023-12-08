@@ -1,18 +1,24 @@
 import pygame
 import sys
 from core.player import Player
+from core.weapon import Weapon
+
 
 class Game:
-    def __init__(self, player_image):
+    def __init__(self, player_images, weapon_image):
         self.width, self.height = 800, 600
         self.screen = pygame.display.set_mode((self.width, self.height))
-        pygame.display.set_caption("BlastBot Adventures")
+        pygame.display.set_caption("Sigrun Adventures")
 
-        # Cargar la imagen del jugador
-        self.player = Player(self.width, self.height, player_image)
+        # Cargar las imágenes del jugador
+        self.player = Player(self.width, self.height, player_images, weapon_image)
+        self.weapon = Weapon(weapon_image)
+        
         
         self.score = 0
         self.font = pygame.font.Font(None, 36)
+
+
 
     def run(self):
         running = True
@@ -26,6 +32,7 @@ class Game:
             self.player.handle_input(keys)
 
             self.player.movements()
+            self.player.weapon.update(self.player.rect)
             self.player.update()
 
             self.draw()
